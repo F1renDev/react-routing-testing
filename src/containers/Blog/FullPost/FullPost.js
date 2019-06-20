@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./FullPost.module.css";
-import Spinner from "../Spinner/Spinner";
+import Spinner from "../../../components/Spinner/Spinner";
 import axios from "axios";
 
 /* Component to read the full post on the main page */
@@ -9,17 +9,15 @@ class FullPost extends React.Component {
         loadedPost: null
     };
 
-    /* The full post should only send a new post request if we got a new post id
-     that is different from the one we have at the moment
-     or if we don't have a post id at the moment */
-    componentDidUpdate() {
-        if (this.props.id) {
+    /* The full post is now getting added or removed from the DOM so it's no longer componentDidUpdate() */
+    componentDidMount() {
+        if (this.props.match.params.id) {
             if (
                 !this.state.loadedPost ||
                 (this.state.loadedPost &&
                     this.state.loadedPost.id !== this.props.id)
             ) {
-                axios.get("/posts/" + this.props.id).then((response) => {
+                axios.get("/posts/" + this.props.match.params.id).then((response) => {
                     // console.log(response);
                     this.setState({ loadedPost: response.data });
                 });

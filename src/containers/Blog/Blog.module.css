@@ -18,5 +18,9 @@
 
 .blog a:hover,
 .blog a:active {
-    color: #fa923f
+    color: #fa923f;
+}
+
+a.navActiveStyle {
+    color: #fa923f;
 }

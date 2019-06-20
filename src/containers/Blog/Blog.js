@@ -1,7 +1,14 @@
 import React from "react";
-import Posts from "./Posts/Posts";
+/* The NavLink allows to add styling to the link because the 'actie' class is added for the active link */
+/* To make this active styling work with css modules we should add a "activeClassName" prop to the NavLink component
+the css should look something like this: a.navActiveStyle {}
+or we can set active styling inline like activeStyle={{ color: 'red'}}  */
+// import { Link } from "react-router-dom";
+import { Route, NavLink } from "react-router-dom";
 import styles from "./Blog.module.css";
-import { Route } from "react-router-dom";
+import Posts from "./Posts/Posts";
+import NewPost from "./NewPost/NewPost";
+import FullPost from './FullPost/FullPost';
 
 class Blog extends React.Component {
     render() {
@@ -11,16 +18,37 @@ class Blog extends React.Component {
                     <nav>
                         <ul>
                             <li>
-                                <a href="/">Home</a>
+                                <NavLink
+                                    to="/"
+                                    /* Can set the active style with inline activeStyle prop */
+                                    // activeStyle={{ color: 'red'}}
+                                    activeClassName={styles.navActiveStyle}
+                                    exact>
+                                    Home
+                                </NavLink>
                             </li>
                             <li>
-                                <a href="/new-post">New Post</a>
+                                <NavLink
+                                    activeClassName={styles.navActiveStyle}
+                                    to={{
+                                        /* pathname can be absolute (from the root of the app) like below
+ or it can be relative {pathname: (this.)props.match.url + '/new-posts'} appending 'new-posts' to the current path */
+                                        pathname: "/new-post",
+                                        /* hash is used to add something ('#submit' in this case) to jump to that id tag after the load is complete*/
+                                        hash: "#submit",
+                                        /* search allows to add some query parametrs to the get request */
+                                        search: "?quick-submit=ture"
+                                    }}>
+                                    New Post
+                                </NavLink>
                             </li>
                         </ul>
                     </nav>
                 </header>
                 {/* Rendering different components dynamically based on the path in the URL */}
-                <Route path="/" exact render={() => <Posts />} />
+                <Route path="/" exact component={Posts} />
+                <Route path="/new-post" component={NewPost} />
+                <Route path="/:id" component={FullPost} />
             </div>
         );
     }
