@@ -4,11 +4,11 @@ import React from "react";
 the css should look something like this: a.navActiveStyle {}
 or we can set active styling inline like activeStyle={{ color: 'red'}}  */
 // import { Link } from "react-router-dom";
-import { Route, NavLink } from "react-router-dom";
+import { Route, NavLink, Switch } from "react-router-dom";
 import styles from "./Blog.module.css";
 import Posts from "./Posts/Posts";
 import NewPost from "./NewPost/NewPost";
-import FullPost from './FullPost/FullPost';
+import FullPost from "./FullPost/FullPost";
 
 class Blog extends React.Component {
     render() {
@@ -46,9 +46,12 @@ class Blog extends React.Component {
                     </nav>
                 </header>
                 {/* Rendering different components dynamically based on the path in the URL */}
-                <Route path="/" exact component={Posts} />
-                <Route path="/new-post" component={NewPost} />
-                <Route path="/:id" component={FullPost} />
+{/* Switch Component is used to only load only one of possible Routs even if the several conditions are matched */}
+                <Switch>
+                    <Route path="/" exact component={Posts} />
+                    <Route path="/new-post" component={NewPost} />
+                    <Route path="/:id" component={FullPost} />
+                </Switch>
             </div>
         );
     }
