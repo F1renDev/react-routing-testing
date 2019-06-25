@@ -3,7 +3,6 @@ import React from "react";
 /* To make this active styling work with css modules we should add a "activeClassName" prop to the NavLink component
 the css should look something like this: a.navActiveStyle {}
 or we can set active styling inline like activeStyle={{ color: 'red'}}  */
-// import { Link } from "react-router-dom";
 import { Route, NavLink, Switch } from "react-router-dom";
 import styles from "./Blog.module.css";
 import Posts from "./Posts/Posts";
@@ -50,6 +49,7 @@ class Blog extends React.Component {
                 <Switch>
                     <Route path="/" exact component={Posts} />
                     <Route path="/new-post" component={NewPost} />
+{/* :id for path is used when we expect dynamic element in the url (the id of the post in this case)*/}
                     <Route path="/:id" component={FullPost} />
                 </Switch>
             </div>
