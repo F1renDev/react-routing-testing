@@ -9,34 +9,50 @@ class FullPost extends React.Component {
         loadedPost: null
     };
 
+
     /* The full post is now getting added or removed from the DOM so it's no longer componentDidUpdate() */
     componentDidMount() {
+        console.log(this.props);
+        this.loadData();
+    }
+
+    /* The list of posts should be loaded every time we get a new id in the url after clicking a single post
+    if the component is alredy mounted via routing */
+    componentDidUpdate() {
+        this.loadData();
+    }
+
+    loadData() {
         if (this.props.match.params.id) {
             if (
                 !this.state.loadedPost ||
                 (this.state.loadedPost &&
-                    this.state.loadedPost.id !== this.props.id)
+                    this.state.loadedPost.id !== +this.props.match.params.id)
             ) {
-                axios.get("/posts/" + this.props.match.params.id).then((response) => {
-                    // console.log(response);
-                    this.setState({ loadedPost: response.data });
-                });
+                axios
+                    .get("/posts/" + this.props.match.params.id)
+                    .then((response) => {
+                        // console.log(response);
+                        this.setState({ loadedPost: response.data });
+                    });
             }
         }
     }
 
     /* Faking a delete request to the jsonplaceholder API */
     deletePostHandler = () => {
-        axios.delete("/posts/" + this.props.id).then((response) => {
-            console.log(response);
-        });
+        axios
+            .delete("/posts/" + this.props.match.params.id)
+            .then((response) => {
+                console.log(response);
+            });
     };
 
     /* Untill no post is selected for the full view a placeholder is used
     When a post is selected but not yet loaded a spinner is shown */
     render() {
         let post = <p style={{ textAlign: "center" }}>Please select a Post!</p>;
-        if (this.props.id) {
+        if (this.props.match.params.id) {
             post = <Spinner />;
         }
         if (this.state.loadedPost) {

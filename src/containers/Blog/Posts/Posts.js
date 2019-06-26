@@ -1,6 +1,8 @@
 import React from "react";
+import { Route } from "react-router-dom";
 import styles from "./Posts.module.css";
 import Post from "../../../components/Post/Post";
+import FullPost from "../FullPost/FullPost";
 /* The link is one approach to handle the navigation when the id of the article is known.
 The other way is doing so programmatically when you for example want to navigate to your destination
 after you send some http requests or do other stuff */
@@ -14,8 +16,8 @@ export default class Posts extends React.Component {
 
     postSelectedHandler = (id) => {
         /* Either of these two is valid */
-        this.props.history.push({pathname: '/' + id});
-        // this.props.history.push('/' + id);
+        this.props.history.push({ pathname: "/posts/" + id });
+        // this.props.history.push('/posts/' + id);
     };
 
     /* Getting dummy data from jsonplaceholder and selecting the first four entrances and updating the 
@@ -51,9 +53,10 @@ export default class Posts extends React.Component {
         if (!this.state.error) {
             posts = this.state.posts.map((post) => {
                 return (
-                    // <Link to={"/" + post.id} key={post.id}>
+                    // <Link to={"/posts/" + post.id} >
                     <Post
                         title={post.title}
+                        key={post.id}
                         /* We can get the props passed by the router either by passing all props with the spread operator
  or by using the withRouter function (match, location, history props etc) on a component that renders
  the component where we need this props */
@@ -66,6 +69,16 @@ export default class Posts extends React.Component {
             });
         }
 
-        return <section className={styles.posts}>{posts}</section>;
+        return (
+            <div>
+                <section className={styles.posts}>{posts}</section>
+                {/* Trying out some nested routing */}
+                {/* :id for path is used when we expect dynamic element in the url (the id of the post in this case)*/}
+                <Route
+                    path={this.props.match.url + "/:id"}
+                    component={FullPost}
+                />
+            </div>
+        );
     }
 }
